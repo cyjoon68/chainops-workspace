@@ -1,0 +1,34 @@
+name: eks-deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: Container image tag to deploy
+        required: true
+        default: develop
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - uses: azure/setup-helm@v4
+      - uses: azure/setup-kubectl@v4
+      - run: aws eks update-kubeconfig --name "${{ vars.EKS_CLUSTER_NAME }}" --region "${{ vars.AWS_REGION }}"
+      - run: |
+          helm upgrade --install chainops-api ./infra/helm \
+            --namespace chainops \
+            --create-namespace \
+            --set api.image=ghcr.io/chainops-labs/chainops-be:${{ inputs.image_tag }}

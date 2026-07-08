@@ -30,11 +30,27 @@ services:
       DATABASE_USERNAME: chainops
       DATABASE_PASSWORD: chainops
       FLYWAY_ENABLED: "true"
+      SENTRY_DSN: ${SENTRY_DSN:-}
     ports:
       - "8082:8080"
     depends_on:
       - db
       - elasticsearch
+  datadog:
+    image: gcr.io/datadoghq/agent:7
+    environment:
+      DD_API_KEY: ${DD_API_KEY:-00000000000000000000000000000000}
+      DD_SITE: ${DD_SITE:-datadoghq.com}
+      DD_APM_ENABLED: "true"
+      DD_LOGS_ENABLED: "true"
+      DD_PROCESS_AGENT_ENABLED: "true"
+      DD_DOGSTATSD_NON_LOCAL_TRAFFIC: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+    profiles:
+      - observability
   fe:
     build: ./chainops-fe
     environment:

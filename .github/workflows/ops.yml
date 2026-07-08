@@ -15,5 +15,6 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
       - run: docker compose config
       - run: terraform -chdir=infra/terraform init -backend=false -input=false
+      - run: terraform -chdir=infra/terraform fmt -check
       - run: terraform -chdir=infra/terraform validate
       - run: ruby -e "require 'yaml'; Dir['infra/k8s/*.yaml'].each { |file| YAML.load_file(file) }"

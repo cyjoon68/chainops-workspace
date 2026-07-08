@@ -10,6 +10,20 @@ spec:
       app: chainops-be
   template:
     metadata:
+      annotations:
+        ad.datadoghq.com/api.checks: |
+          {
+            "openmetrics": {
+              "init_config": {},
+              "instances": [
+                {
+                  "openmetrics_endpoint": "http://%%host%%:8080/actuator/prometheus",
+                  "namespace": "chainops",
+                  "metrics": [".*"]
+                }
+              ]
+            }
+          }
       labels:
         app: chainops-be
     spec:
@@ -22,6 +36,13 @@ spec:
             httpGet:
               path: /actuator/health
               port: 8080
+          env:
+            - name: SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: chainops-observability
+                  key: sentry-dsn
+                  optional: true
 ---
 apiVersion: v1
 kind: Service
