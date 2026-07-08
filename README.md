@@ -1,12 +1,17 @@
-# chainops-workspace
+# ChainOps
 
-Root workspace for ChainOps. Child repos are managed as git submodules.
+ChainOps is an incident operations console for connecting deployment history, incident state, rollback checks, log references, and MTTR tracking.
 
 ```text
 chainops-workspace/
   chainops-fe/
   chainops-be/
 ```
+
+## Services
+
+- `chainops-fe`: operations console for incidents, deployment history, and MTTR.
+- `chainops-be`: incident lifecycle API and MTTR calculation.
 
 ## Run
 
@@ -15,11 +20,16 @@ git submodule update --init --recursive
 docker compose up --build
 ```
 
-## Resume evidence
+## Core Flow
 
-- GitOps incident operations: deploy event, incident lifecycle, rollback checklist, MTTR metric.
-- Log storage constraint: incidents store `trace_id` and `elk_url`, not raw log bodies.
-- Frontend: Next.js App Router, React Compiler, TypeScript, ky.
-- Backend: Kotlin, Spring Boot MVC, PostgreSQL schema.
-- Infra: Docker Compose, Kubernetes manifests, Helm chart, Terraform namespace, Argo CD GitOps app, ELK services.
-- CI: FE lint/build, BE Gradle test.
+- Register deployment events.
+- Create and update incidents.
+- Track rollback checklist progress.
+- Link incidents to log search references.
+- Calculate average MTTR for resolved incidents.
+
+## Operations
+
+- Incident records store `trace_id` and `elk_url` instead of raw log bodies.
+- ELK services are included for local log exploration.
+- Terraform, Kubernetes, Helm, and Argo CD manifests describe deployment structure.
