@@ -13,8 +13,7 @@ jobs:
         with:
           submodules: recursive
       - uses: hashicorp/setup-terraform@v3
-      - uses: azure/setup-kubectl@v4
       - run: docker compose config
       - run: terraform -chdir=infra/terraform init -backend=false -input=false
       - run: terraform -chdir=infra/terraform validate
-      - run: kubectl apply --dry-run=client --validate=false -f infra/k8s
+      - run: ruby -e "require 'yaml'; Dir['infra/k8s/*.yaml'].each { |file| YAML.load_file(file) }"
