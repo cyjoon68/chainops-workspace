@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chainops-be
+  namespace: chainops
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chainops-be
+  template:
+    metadata:
+      labels:
+        app: chainops-be
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/chainops-labs/chainops-be:develop
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chainops-be
+  namespace: chainops
+spec:
+  selector:
+    app: chainops-be
+  ports:
+    - port: 8080
+      targetPort: 8080

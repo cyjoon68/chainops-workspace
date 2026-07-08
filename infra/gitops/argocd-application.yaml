@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: chainops
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/cyjoon68/chainops-workspace.git
+    targetRevision: develop
+    path: infra/k8s
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: chainops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
