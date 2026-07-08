@@ -1,0 +1,8 @@
+[submodule "chainops-fe"]
+	path = chainops-fe
+	url = https://github.com/chainops-labs/chainops-fe.git
+	branch = develop
+[submodule "chainops-be"]
+	path = chainops-be
+	url = https://github.com/chainops-labs/chainops-be.git
+	branch = develop
