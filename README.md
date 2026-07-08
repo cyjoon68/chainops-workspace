@@ -20,5 +20,5 @@ docker compose up --build
 - GitOps incident operations: deploy event, incident lifecycle, rollback checklist, MTTR metric.
 - Frontend: Next.js App Router, React Compiler, TypeScript, ky.
 - Backend: Kotlin, Spring Boot MVC, PostgreSQL schema.
-- Infra: Docker Compose, Kubernetes manifests, Helm chart, Terraform namespace, Argo CD GitOps app.
+- Infra: Docker Compose, Kubernetes manifests, Helm chart, Terraform namespace, Argo CD GitOps app, ELK services.
 - CI: FE lint/build, BE Gradle test.
